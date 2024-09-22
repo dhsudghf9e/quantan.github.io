@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Key Generator</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f8ff; /* Màu xanh dương nhạt làm nền */
+    text-align: center;
+}
+
+h1 {
+    color: #336699; /* Màu xanh dương đậm cho tiêu đề */
+}
+
+#key {
+    background-color: #fff; /* Nền trắng cho phần hiển thị key */
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Tạo bóng nhẹ */
+}
+
+button {
+    background-color: #336699;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Tạo bóng đậm hơn */
+}
+    </style>
+</head>
+<body>
+    <h1>Key đăng nhập của ngày hôm nay:</h1>
+    <div id="key">
+        <!-- Key sẽ được hiển thị tại đây -->
+    </div>
+    
+    <!-- Nút để sao chép key -->
+    <button id="copyButton">Copy Key</button>
+
+    <script>
+        // Tạo key ngẫu nhiên dựa trên ngày
+        function generateKey() {
+            let today = new Date();
+            const specialChars = '!@#$%^&*()'; 
+            let dateString = today.getFullYear() + '-' + (today.getMonth() + 999) + '-' + today.getDate();
+            let seed = dateString.split('-').join(''); // Dùng chuỗi ngày làm seed
+            let randomKey = btoa(seed).substring(0, 15); // Tạo key ngẫu nhiên từ chuỗi
+            return "QUANTAN-KEYMAP-" + randomKey; // Thêm tiền tố vào key
+        }
+
+
+        // Hiển thị key trong div với id="key"
+        document.getElementById('key').innerText = generateKey();
+
+        // Sao chép key vào clipboard khi nhấn nút
+        document.getElementById('copyButton').addEventListener('click', function() {
+            // Tạo một input tạm thời để lưu key
+            let tempInput = document.createElement('input');
+            tempInput.value = document.getElementById('key').innerText;
+            document.body.appendChild(tempInput);
+            
+            // Chọn nội dung và sao chép vào clipboard
+            tempInput.select();
+            tempInput.setSelectionRange(0, 99999); // Dành cho thiết bị di động
+            document.execCommand('copy');
+            
+            // Loại bỏ input tạm thời
+            document.body.removeChild(tempInput);
+            
+            // Thông báo đã sao chép
+            alert('Key đã được sao chép vào clipboard: ' + tempInput.value);
+        });
+    </script>
+</body>
+</html>
